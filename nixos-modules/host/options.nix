@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, noUserModules, ... }:
 
 {
   options.microvm = with lib; {
@@ -53,7 +53,7 @@
             default = null;
             type = nullOr (lib.mkOptionType {
               name = "Toplevel NixOS config";
-              merge = loc: defs: (import "${config.nixpkgs}/nixos/lib/eval-config.nix" {
+              merge = loc: defs: (noUserModules.extendModules {
                 modules =
                   let
                     extraConfig = ({ lib, ... }: {
@@ -65,10 +65,12 @@
                   in [
                     extraConfig
                     ../microvm
+                    {
+                      nixpkgs.system = if config.pkgs != null then config.pkgs.system else pkgs.system;
+                    }
                   ] ++ (map (x: x.value) defs);
                 prefix = [ "microvm" "vms" name "config" ];
-                inherit (config) specialArgs pkgs;
-                system = if config.pkgs != null then config.pkgs.system else pkgs.system;
+                inherit (config) specialArgs;
               });
             });
           };
