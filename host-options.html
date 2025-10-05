@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
+<html lang="en" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -7,7 +7,8 @@
 
 
         <!-- Custom HTML head -->
-        
+        <script defer data-domain="microvm-nix.github.io" src="https://p.spaceboyz.net/js/script.js"></script>
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -24,26 +25,41 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
-    </head>
-    <body class="sidebar-visible no-js">
-    <div id="body-container">
-        <!-- Provide site root to javascript -->
-        <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
-        </script>
 
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -57,70 +73,51 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
+            const html = document.documentElement;
             html.classList.remove('light')
             html.classList.add(theme);
-            var body = document.querySelector('body');
-            body.classList.remove('no-js')
-            body.classList.add('js');
+            html.classList.add("js");
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var body = document.querySelector('body');
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            body.classList.remove('sidebar-visible');
-            body.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Intro</a></li><li class="chapter-item expanded "><a href="declaring.html"><strong aria-hidden="true">2.</strong> Declaring MicroVMs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">2.1.</strong> Configuration options</a></li><li class="chapter-item expanded "><a href="interfaces.html"><strong aria-hidden="true">2.2.</strong> Network interfaces</a></li><li class="chapter-item expanded "><a href="shares.html"><strong aria-hidden="true">2.3.</strong> Shared directories</a></li><li class="chapter-item expanded "><a href="cpu-emulation.html"><strong aria-hidden="true">2.4.</strong> CPU emulation</a></li><li class="chapter-item expanded "><a href="output-options.html"><strong aria-hidden="true">2.5.</strong> Output options</a></li><li class="chapter-item expanded "><a href="microvm-options.html"><strong aria-hidden="true">2.6.</strong> MicroVM options reference ⚙️</a></li></ol></li><li class="chapter-item expanded "><a href="packages.html"><strong aria-hidden="true">3.</strong> Running a MicroVM as a package</a></li><li class="chapter-item expanded "><a href="host.html"><strong aria-hidden="true">4.</strong> Preparing a host for declarative MicroVMs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="simple-network.html"><strong aria-hidden="true">4.1.</strong> A simple network setup</a></li><li class="chapter-item expanded "><a href="advanced-network.html"><strong aria-hidden="true">4.2.</strong> Advanced network setup</a></li><li class="chapter-item expanded "><a href="host-systemd.html"><strong aria-hidden="true">4.3.</strong> Host systemd services</a></li><li class="chapter-item expanded "><a href="host-options.html" class="active"><strong aria-hidden="true">4.4.</strong> Host options reference ⚙️</a></li></ol></li><li class="chapter-item expanded "><a href="declarative.html"><strong aria-hidden="true">5.</strong> Declarative MicroVMs</a></li><li class="chapter-item expanded "><a href="microvm-command.html"><strong aria-hidden="true">6.</strong> Imperative MicroVM management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ssh-deploy.html"><strong aria-hidden="true">6.1.</strong> Deploy via SSH</a></li></ol></li><li class="chapter-item expanded "><a href="conventions.html"><strong aria-hidden="true">7.</strong> Conventions</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">8.</strong> Frequently Asked Questions</a></li></ol>
-            </div>
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <!-- Track and set sidebar scroll position -->
-        <script>
-            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
-            sidebarScrollbox.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
-                }
-            }, { passive: true });
-            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
-            sessionStorage.removeItem('sidebar-scroll');
-            if (sidebarScrollTop) {
-                // preserve sidebar scroll position when navigating via links within sidebar
-                sidebarScrollbox.scrollTop = sidebarScrollTop;
-            } else {
-                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
-                var activeSection = document.querySelector('#sidebar .active');
-                if (activeSection) {
-                    activeSection.scrollIntoView({ block: 'center' });
-                }
-            }
-        </script>
-
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -130,13 +127,14 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -147,13 +145,21 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/microvm-nix/microvm.nix" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -182,7 +188,7 @@ list of string</p>
 <code>[ ]</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmhostenable"><a class="header" href="#microvmhostenable">microvm.host.enable</a></h2>
 <p>Whether to enable the microvm.nix host module.</p>
@@ -192,30 +198,17 @@ boolean</p>
 <code>true</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
-<h2 id="microvmhosttapscript"><a class="header" href="#microvmhosttapscript">microvm.host.tapScript</a></h2>
-<p>Commands to run after creating a tap interface</p>
-<p>Defaults to bring the interface up.</p>
-<p>If you do not want the interface to be automatically created
-at all, just set
-<code>systemd.services."microvm-tap-interfaces@%i.service".enable = false</code></p>
+<h2 id="microvmhoststartuptimeout"><a class="header" href="#microvmhoststartuptimeout">microvm.host.startupTimeout</a></h2>
+<p>Start up timeout for the VMs in seconds</p>
 <p><em>Type:</em>
-strings concatenated with “\n”</p>
-<p><em>Default:</em></p>
-<pre><code>''
-  /nix/store/f6n5dhi23iii79004m36p7h5bkh578v3-iproute2-6.10.0/bin/ip link set "$id" up
-''
-</code></pre>
-<p><em>Example:</em></p>
-<pre><code>''
-  # Attach tap interface to bridge br0, and bring it up
-  ''${pkgs.iproute2}/bin/ip link set "$id" master br0 up
-''
-</code></pre>
+positive integer, meaning &gt;0</p>
+<p><em>Default:</em>
+<code>150</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmhostusenotifysockets"><a class="header" href="#microvmhostusenotifysockets">microvm.host.useNotifySockets</a></h2>
 <p>Enable if all your MicroVMs run with a Hypervisor that sends
@@ -228,52 +221,17 @@ boolean</p>
 <code>false</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmstatedir"><a class="header" href="#microvmstatedir">microvm.stateDir</a></h2>
 <p>Directory that contains the MicroVMs</p>
 <p><em>Type:</em>
-path</p>
+absolute path</p>
 <p><em>Default:</em>
 <code>"/var/lib/microvms"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
-</ul>
-<h2 id="microvmvirtiofsdextraargs"><a class="header" href="#microvmvirtiofsdextraargs">microvm.virtiofsd.extraArgs</a></h2>
-<p>Extra command-line switch to pass to virtiofsd.</p>
-<p><em>Type:</em>
-list of string</p>
-<p><em>Default:</em>
-<code>[ ]</code></p>
-<p><em>Declared by:</em></p>
-<ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
-</ul>
-<h2 id="microvmvirtiofsdinodefilehandles"><a class="header" href="#microvmvirtiofsdinodefilehandles">microvm.virtiofsd.inodeFileHandles</a></h2>
-<p>When to use file handles to reference inodes instead of O_PATH file descriptors
-(never, prefer, mandatory)</p>
-<p>Allows you to overwrite default behavior in case you hit “too
-many open files” on eg. ZFS.
-<a href="https://gitlab.com/virtio-fs/virtiofsd/-/issues/121">https://gitlab.com/virtio-fs/virtiofsd/-/issues/121</a></p>
-<p><em>Type:</em>
-null or one of “never”, “prefer”, “mandatory”</p>
-<p><em>Default:</em>
-<code>null</code></p>
-<p><em>Declared by:</em></p>
-<ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
-</ul>
-<h2 id="microvmvirtiofsdthreadpoolsize"><a class="header" href="#microvmvirtiofsdthreadpoolsize">microvm.virtiofsd.threadPoolSize</a></h2>
-<p>The amounts of threads virtiofsd should spawn. This option also takes the special
-string <code>\</code>nproc`` which spawns as many threads as the host has cores.</p>
-<p><em>Type:</em>
-string or (unsigned integer, meaning &gt;=0)</p>
-<p><em>Default:</em>
-<code>"`nproc`"</code></p>
-<p><em>Declared by:</em></p>
-<ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvms"><a class="header" href="#microvmvms">microvm.vms</a></h2>
 <p>The MicroVMs that shall be built declaratively with the host NixOS.</p>
@@ -283,7 +241,7 @@ attribute set of (submodule)</p>
 <code>{ }</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnameautostart"><a class="header" href="#microvmvmsnameautostart">microvm.vms.&lt;name&gt;.autostart</a></h2>
 <p>Add this MicroVM to config.microvm.autostart?</p>
@@ -293,7 +251,7 @@ boolean</p>
 <code>true</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnameconfig"><a class="header" href="#microvmvmsnameconfig">microvm.vms.&lt;name&gt;.config</a></h2>
 <p>A specification of the desired configuration of this MicroVM,
@@ -304,17 +262,17 @@ null or (Toplevel NixOS config)</p>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnameflake"><a class="header" href="#microvmvmsnameflake">microvm.vms.&lt;name&gt;.flake</a></h2>
 <p>Source flake for declarative build</p>
 <p><em>Type:</em>
-null or path</p>
+null or absolute path</p>
 <p><em>Default:</em>
 <code>flakeInputs.my-infra</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnamenixpkgs"><a class="header" href="#microvmvmsnamenixpkgs">microvm.vms.&lt;name&gt;.nixpkgs</a></h2>
 <p>This option is only respected when <code>config</code> is
@@ -322,12 +280,12 @@ specified.</p>
 <p>The nixpkgs path to use for the MicroVM. Defaults to the
 host’s nixpkgs.</p>
 <p><em>Type:</em>
-path</p>
+absolute path</p>
 <p><em>Default:</em>
 <code>pkgs.path</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnamepkgs"><a class="header" href="#microvmvmsnamepkgs">microvm.vms.&lt;name&gt;.pkgs</a></h2>
 <p>This option is only respected when <code>config</code> is specified.</p>
@@ -341,7 +299,7 @@ null or unspecified value</p>
 <code>pkgs</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnamerestartifchanged"><a class="header" href="#microvmvmsnamerestartifchanged">microvm.vms.&lt;name&gt;.restartIfChanged</a></h2>
 <p>Restart this MicroVM’s services if the systemd units are changed,
@@ -353,7 +311,7 @@ boolean</p>
 <code>false</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnamespecialargs"><a class="header" href="#microvmvmsnamespecialargs">microvm.vms.&lt;name&gt;.specialArgs</a></h2>
 <p>This option is only respected when <code>config</code> is specified.</p>
@@ -366,7 +324,7 @@ attribute set of unspecified value</p>
 <code>{ }</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 <h2 id="microvmvmsnameupdateflake"><a class="header" href="#microvmvmsnameupdateflake">microvm.vms.&lt;name&gt;.updateFlake</a></h2>
 <p>Source flakeref to store for later imperative update</p>
@@ -376,7 +334,7 @@ null or string</p>
 <code>"git+file:///home/user/my-infra"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+<li><a href="https://github.com/microvm-nix/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
 </ul>
 
                     </main>
@@ -425,6 +383,7 @@ null or string</p>
         <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
+
 
 
     </div>
